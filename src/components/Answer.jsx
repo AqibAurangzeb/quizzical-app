@@ -3,8 +3,10 @@ function Answer(props) {
   const styles = {
     backgroundColor: quiz.answers.some(x => x.id === answerId && x.correct) 
       ? "#94D7A2" 
-      : quiz.answers.some(x => x.id === answerId) && "#F8BCBC",
-    color: quiz.answers.some(x => x.id === answerId && !x.correct) && "#293264"
+      : quiz.answers.some(x => x.id === answerId && !x.correct) && "#F8BCBC",
+    color: quiz.answers.some(x => x.id === answerId && !x.correct) && "#293264",
+    opacity: quiz.isCompleted 
+      ? quiz.answers.some(x => x.id === answerId && x.correct) ? "1" : "0.5" : "1"
   }
   const questionIndex = formData.findIndex(x => x.id === questionId)
 
