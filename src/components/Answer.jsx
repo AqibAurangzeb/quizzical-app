@@ -1,6 +1,11 @@
 function Answer(props) {
-  const { questionId, answerId, answer, answerIndex, formData, setFormData } = props
-
+  const { questionId, answerId, answer, answerIndex, formData, setFormData, quiz } = props
+  const styles = {
+    backgroundColor: quiz.answers.some(x => x.id === answerId && x.correct) 
+      ? "#94D7A2" 
+      : quiz.answers.some(x => x.id === answerId) && "#F8BCBC",
+    color: quiz.answers.some(x => x.id === answerId && !x.correct) && "#293264"
+  }
   const questionIndex = formData.findIndex(x => x.id === questionId)
 
   function handleChange(event) {
@@ -25,8 +30,9 @@ function Answer(props) {
             name={questionId}
             checked={formData[questionIndex]?.answers[answerIndex]?.checked ?? false}
             onChange={handleChange}
+            disabled={quiz.isCompleted}
           />
-          <label className="question--answer" htmlFor={answerId}>{answer}</label>
+          <label style={styles} className="question--answer" htmlFor={answerId}>{answer}</label>
     </div>
   )
 }

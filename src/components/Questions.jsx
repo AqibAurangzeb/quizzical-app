@@ -7,7 +7,7 @@ function Questions() {
   const [questions, setQuestions] = useState([])
   const [formData, setFormData] = useState({})
   const [quiz, setQuiz] = useState(
-    { isCompleted: false, missingAnswers: false, questionCount: 0, answeredCorrectly: 0 }
+    { isCompleted: false, missingAnswers: false, questionCount: 0, correctCount: 0, answers: [] }
   )
 
   function getQuestions() {
@@ -18,7 +18,10 @@ function Questions() {
         const questions = data.results.map(questionData => {
           return {
             ...questionData,
-            answers: [...questionData.incorrect_answers, questionData.correct_answer],
+            answers: [
+              ...questionData.incorrect_answers, 
+              questionData.correct_answer
+            ].map(x => ({id: nanoid(), answer: x})),
             id: nanoid()
           }
         })
@@ -38,9 +41,9 @@ function Questions() {
       return {
         id: question.id,
         question: question.question,
-        answers: question.answers.map((answer, index) => (
+        answers: question.answers.map(answer => (
           {
-            id: `${question.id}-answer${index+1}`,
+            id: answer.id,
             answer: answer,
             checked: false
           })
@@ -56,8 +59,8 @@ function Questions() {
 
     const correctAnswers = questions.map(question => question.correct_answer)
 
-    let answeredCorrectlyCount = 0;
-
+    let results = [];
+    let correct = 0;
     let missingAnswer = false
     formData.forEach((question, index) => {
       const selectedAnswer = question.answers.find(x => x.checked)
@@ -67,8 +70,12 @@ function Questions() {
         return;
       }
 
-      if (correctAnswers[index] === selectedAnswer.answer) {
-        answeredCorrectlyCount++
+      if (correctAnswers[index] === selectedAnswer.answer.answer) {
+        results.push({id: selectedAnswer.answer.id, correct: true})
+        correct++
+      }
+      else {
+        results.push({id: selectedAnswer.answer.id, correct: false})
       }
     });
 
@@ -79,13 +86,13 @@ function Questions() {
     }
     else {
       setQuiz(prevState => ({
-        ...prevState, isCompleted: true, answeredCorrectly: answeredCorrectlyCount
+        ...prevState, isCompleted: true, correctCount: correct, answers: results
       }))
     }
   }
 
   function playAgain() {
-    setQuiz({ isCompleted: false, missingAnswers: false, questionCount: 0, answeredCorrectly: 0 })
+    setQuiz({ isCompleted: false, missingAnswers: false, questionCount: 0, correctCount: 0, answers: [] })
     getQuestions()
   }
 
@@ -119,7 +126,7 @@ function Questions() {
           </div>
           :
           <div className="answered-correctly">
-            <p>You Scored {`${quiz.answeredCorrectly}/${quiz.questionCount}`} correct answers</p>
+            <p>You Scored {`${quiz.correctCount}/${quiz.questionCount}`} correct answers</p>
             <button onClick={playAgain}>Play again</button>
           </div>
         }

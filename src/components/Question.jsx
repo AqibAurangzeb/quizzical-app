@@ -2,11 +2,19 @@ import Answer from './Answer'
 import he from 'he'
 
 function Question(props) {
-  const { formData, setFormData } = props
+  const { formData, setFormData, quiz } = props
   const { id, question, answers } = props.questionData
 
   const answerElements = answers.map((answer, index) => {
-    return <Answer key={`${id}-answer${index+1}`} questionId={id} answerId={`${id}-answer${index+1}`} answer={he.decode(answer)} answerIndex={index} formData={formData} setFormData={setFormData} />
+    return <Answer 
+      key={answer.id} 
+      questionId={id} 
+      answerId={answer.id} 
+      answer={he.decode(answer.answer)} 
+      answerIndex={index} 
+      formData={formData} 
+      setFormData={setFormData} 
+      quiz={quiz} />
   })
 
   return (
