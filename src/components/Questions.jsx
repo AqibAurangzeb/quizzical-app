@@ -15,13 +15,13 @@ function Questions() {
     fetch("https://opentdb.com/api.php?amount=5")
       .then(response => response.json())
       .then(data => {
-        const questions = data.results.map(questionData => {
+        let questions = data.results.map(questionData => {
           return {
             ...questionData,
-            answers: [
+            answers: shuffle([
               ...questionData.incorrect_answers, 
               questionData.correct_answer
-            ].map(x => ({id: nanoid(), answer: x})),
+            ].map(x => ({id: nanoid(), answer: x}))),
             id: nanoid()
           }
         })
@@ -94,6 +94,20 @@ function Questions() {
   function playAgain() {
     setQuiz({ isCompleted: false, missingAnswers: false, questionCount: 0, correctCount: 0, answers: [] })
     getQuestions()
+  }
+
+  function shuffle(array) {
+    let currentIndex = array.length,  randomIndex;
+  
+    while (currentIndex != 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+  
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+  
+    return array;
   }
 
   if (loading) {
