@@ -11,7 +11,7 @@ body {
   font-family: 'Inter', sans-serif;
   background-color: #F5F7FB;
   color: #293264;
-  overflow: hidden
+  padding: 1em;
 }
 
 /* typography */
@@ -29,7 +29,7 @@ h1 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 97vh;
 }
 
 .intro--title {
@@ -56,7 +56,7 @@ h1 {
 
 .intro--blue-blob,
 .intro--yellow-blob {
-  position: absolute;
+  position: fixed;
   transition: 2s;
   animation: grow 2s;
 }
@@ -86,7 +86,7 @@ h1 {
 /* questions component */
 
 form {
-  width: 450px;
+  max-width: 500px;
   margin: 0 auto;
   margin-top: 4em;
 }
@@ -120,7 +120,9 @@ form button {
 .question--form-control {
   display: flex;
   justify-content: flex-start;
-  gap: 10px;
+  flex-wrap: wrap;
+  row-gap: 0;
+  column-gap: 10px;
 }
 
 /* answer component */
@@ -187,15 +189,15 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 97vh;
 }
 
 .loading {
   border: 16px solid #f3f3f3;
   border-radius: 50%;
   border-top: 16px solid #D6DBF5;
-  width: 30vh;
-  height: 30vh;
+  width: 20vh;
+  height: 20vh;
   -webkit-animation: spin 2s linear infinite; /* Safari */
   animation: spin 2s linear infinite;
 }
